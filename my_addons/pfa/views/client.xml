@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="client_form_view">
+            <field name="name">client.form.view</field>
+            <field name="model">pfa.client</field>
+            <field name="arch" type="xml">
+                    <form string="Clients">
+                        <sheet>
+                            <div style="float: left; width: 50%">
+                                <group>
+                                    <field name="num_client"/>
+                                    <field name="nom"/>
+                                    <field name="prenom"/>
+                                    <field name="cin"/>
+                                    <field name="tel"/>
+                                    <field name="poste_code"/>
+                                </group>
+                            </div>
+                            <div style="float: left; width: 50%">
+                                <group>
+                                    <field name="num_permis"/>
+                                    <field name="date_permis"/>
+                                    <field name="voiture_id"/>
+                                    <field name="facture_id"/>
+                                    <field name="contrat_id"/>
+                                </group>
+                            </div>
+                        </sheet>
+                    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="client_tree_view">
+            <field name="name">Clients</field>
+            <field name="model">pfa.client</field>
+            <field name="arch" type="xml">
+                <tree string="Clients">
+                    <field name="num_client"/>
+                    <field name="nom"/>
+                    <field name="prenom"/>
+                    <field name="cin" />
+                    <field name="tel"/>
+                    <field name="adresse"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="client_kanban_view">
+            <field name="name">client.kanban.view</field>
+            <field name="model">pfa.client</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="num_client">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Nom :
+                                    <field name="nom"/>
+                                    <br/>
+                                    Prenom:
+                                    <field name="prenom"/>
+                                    <br/>
+                                    Numéro CIN:
+                                    <field name="cin"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+<!--        <record id="client_search_view" model="ir.ui.view">-->
+<!--          <field name="name">client.search.view</field>-->
+<!--      <field name="model">pfa.client</field>-->
+<!--      <field name="arch" type="xml">-->
+<!--          <search>-->
+<!--              <field name="num_client"/>-->
+<!--              <field name="nom"/>-->
+<!--              <field name="prenom"/>-->
+
+<!--               <filter name="my_cin" string="Numéro CIN"-->
+<!--                            domain="[('cin', '=', uid)]"/>-->
+
+<!--              <filter name="my_contrat" string="Numéro contrat"-->
+<!--                            domain="[('contrat_id', '=', uid)]"/>-->
+
+<!--                    <group string="Group By">-->
+<!--                        <filter name="by_num_client" string="Numéro client"-->
+<!--                                context="{'group_by': 'num_client'}"/>-->
+
+<!--                        <filter name="by_nom" string="Nom"-->
+<!--                                context="{'group_by': 'nom'}"/>-->
+
+<!--                        <filter name="by_prenom" string="Prénom"-->
+<!--                                context="{'group_by': 'prenom'}"/>-->
+
+
+
+<!--                    </group>-->
+<!--          </search>-->
+<!--      </field>-->
+<!--      </record>-->
+
+
+
+
+<!--actions-->
+        <record model="ir.actions.act_window" id="client_action">
+            <field name="name">Clients</field>
+            <field name="res_model">pfa.client</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Créer le premier client</p>
+            </field>
+        </record>
+
+        <menuitem name="Loacation" id="main_gestion_location_menu"/>
+        <menuitem name="Clients" id="liste_client_menu" parent="main_gestion_location_menu" action="client_action"/>
+    </data>
+</odoo>

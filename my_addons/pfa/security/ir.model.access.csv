@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pfa_client,access.pfa.client,model_pfa_client,,1,1,1,1
+access_pfa_voiture,access.pfa.voiture,model_pfa_voiture,,1,1,1,1
+access_pfa_contrat,access.pfa.contrat,model_pfa_contrat,,1,1,1,1
+access_pfa_facture,access.pfa.facture,model_pfa_facture,,1,1,1,1
+

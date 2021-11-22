@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="voiture_form_view">
+            <field name="name">voiture.form</field>
+            <field name="model">pfa.voiture</field>
+            <field name="arch" type="xml">
+                    <form string="Voitures">
+                        <header>
+                        <button name="action_louee" type="object" string="Louer la voiture" class="oe_highlight" states="non_louee"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                        <sheet>
+                            <div style="float: left; width: 50%">
+                                <group>
+                                    <field name="immatriculation"/>
+                                    <field name="power"/>
+                                    <field name="km_parcouru"/>
+                                    <field name="client_id" widget="many2many_tags"/>
+                                </group>
+                            </div>
+                            <div style="float: left; width: 50%">
+                                <group>
+                                    <field name="marque"/>
+                                    <field name="model"/>
+                                    <field name="couleur"/>
+                                    <field name="prix"/>
+                                    <field name="nb_jour_location"/>
+                                    <field name="prix_location"/>
+                                </group>
+                            </div>
+                        </sheet>
+                    </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="voiture_tree_view">
+            <field name="name">Voitures</field>
+            <field name="model">pfa.voiture</field>
+            <field name="arch" type="xml">
+                <tree string="Clients">
+                    <field name="immatriculation"/>
+                    <field name="marque"/>
+                    <field name="model"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="voiture_kanban_view">
+            <field name="name">voiture.kanban</field>
+            <field name="model">pfa.voiture</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="immatriculation">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Immatriculation :
+                                    <field name="immatriculation"/>
+                                    <br/>
+                                    Marque :
+                                    <field name="marque"/>
+                                    <br/>
+                                    Modèle :
+                                    <field name="model"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="voiture_graphg_view">
+            <field name="name">voiture.graph</field>
+            <field name="model">pfa.voiture</field>
+            <field name="arch" type="xml">
+                <graph string="Graphe de voitures">
+                    <field name="marque"/>
+                    <field name="client_id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="voiture_action">
+            <field name="name">Voitures</field>
+            <field name="res_model">pfa.voiture</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Créer la première voiture</p>
+            </field>
+        </record>
+
+        <menuitem name="Loacation" id="main_gestion_location_menu"/>
+        <menuitem name="Clients" id="liste_client_menu" parent="main_gestion_location_menu" action="client_action"/>
+        <menuitem name="Voitures" id="liste_voiture_menu" parent="main_gestion_location_menu" action="voiture_action"/>
+    </data>
+</odoo>

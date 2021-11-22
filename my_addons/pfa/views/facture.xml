@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="facture_form_view">
+            <field name="name">facture.form</field>
+            <field name="model">pfa.facture</field>
+            <field name="arch" type="xml">
+                <form string="Factures">
+                    <header>
+                        <button name="action_saved" type="object" string="Enregistrer la facture" class="oe_highlight" states="draft"/>
+                        <button name="action_in_payment" type="object" string="En paiement" class="oe_highlight" states="saved"/>
+                        <button name="action_paied" type="object" string="Payer la facture" class="oe_highlight" states="in_payment"/>
+<!--                        <button name="get_report" type="object" string="imprimer rapport" class="oe_highlight"/>-->
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="num_fact"/>
+                            <field name="date_fact"/>
+                            <field name="client_id" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="facture_tree_view">
+            <field name="name">Factures</field>
+            <field name="model">pfa.facture</field>
+            <field name="arch" type="xml">
+                <tree string="Contrats">
+                    <field name="num_fact"/>
+                    <field name="date_fact"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="facture_kanban_view">
+            <field name="name">facture.kanban</field>
+            <field name="model">pfa.facture</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="num_fact">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div
+                                    t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                                  oe_kanban_global_click_edit oe_semantic_html_override
+                                                  oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg" title="Manage" aria-label="Manage"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker"
+                                                    data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"></div>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <!-- title -->
+                                    Numéro facture :
+                                    <field name="num_fact"/>
+                                    <br/>
+                                    Date facture :
+                                    <field name="date_fact"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+<!--     les actions-->
+        <record model="ir.actions.act_window" id="facture_action">
+            <field name="name">Factures</field>
+            <field name="res_model">pfa.facture</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Créer la première facture</p>
+            </field>
+        </record>
+
+
+
+        <menuitem name="Loacation" id="main_gestion_location_menu"/>
+        <menuitem name="Clients" id="liste_client_menu" parent="main_gestion_location_menu" action="client_action"/>
+        <menuitem name="Voitures" id="liste_voiture_menu" parent="main_gestion_location_menu" action="voiture_action"/>
+        <menuitem name="Contrats" id="liste_contrat_menu" parent="main_gestion_location_menu" action="contrat_action"/>
+        <menuitem name="Factures" id="liste_facture_menu" parent="main_gestion_location_menu" action="facture_action"/>
+    </data>
+</odoo>
